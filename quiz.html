@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Javascript Quiz</title>
+
+    <style>
+        
+        body{
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background-color: rgb(215, 236, 250);
+        }
+        .quiz-box{
+            width: 500px;
+            background-color: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+            
+        }
+        #question{
+            font-size: 20px;
+            margin: 20px;
+            color: #a30202;
+        }
+        .option-btn{
+            display: block;
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            font-size: 15px;
+            border: 2px solid #bfbfbf;
+            border-radius: 6px;
+            background-color: rgb(252, 255, 255);
+            text-align: left;
+            cursor: pointer;
+            box-sizing: border-box;
+        }
+        .option-btn:hover{
+            background-color:#94c67f ;
+            border-color: rgb(160, 157, 157);
+        }
+        #result{
+            font-size: 18px;
+            font-weight: bold;
+            margin-top: 15px;
+            color: #1d1c1c;
+        }
+        #nextBtn{
+            padding: 15px 20px;
+            font-size: 16px;
+            background-color: #ff9f43;
+            color:white ;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-top: 10px;
+            display: flex;
+            align-items: center;
+        }
+        #nextBtn:hover{
+            background-color: #ffb066;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="quiz-box">
+    <h2 id="question"></h2>
+    <div id="options"></div>
+    <p id="result"></p>
+    <button id="nextBtn" style="display: none;"> Next Question </button>
+    </div>
+    <script>
+        let questionDisplay = document.getElementById("question");
+        let optionsDisplay = document.getElementById("options");
+        let resultDisplay = document.getElementById("result");
+
+        let questions = [
+            {
+                question : "What is the capital of india ?",
+                options : ["Delhi" ,"Mumbai" , "Kolkata" , "Chenai"],
+                answer : "Delhi"
+            },
+            {
+                question : "Which language runs in Web browser ?",
+                options : ["java", "c","python","javascript"],
+                answer : "javascript"
+            },
+            {
+                question : "What does CSS stand for ?",
+                options : ["Cascading Style Sheets", "Computer Style Sheets", "Creative Style System", "Colorful Style Sheets"],
+                answer : "Cascading Style Sheets"
+            },
+        ]
+
+        let score = 0;
+        let currentQuestionIndex = 0;
+        let nextBtn = document.getElementById("nextBtn");
+
+        function loadQuestion(){
+            let currentQuestion = questions[currentQuestionIndex];
+            questionDisplay.textContent = currentQuestion.question;
+            resultDisplay.textContent="";
+            nextBtn.style.display = "none";
+
+            optionsDisplay.innerHTML = "";
+
+            currentQuestion.options.forEach(function(option){
+                let btn = document.createElement("button");
+                btn.textContent = option;
+                btn.classList.add ("option-btn");
+
+                btn.addEventListener("click", function(){
+                    if(option=== currentQuestion.answer){
+                        resultDisplay.textContent = "correct ! ✅";
+                        score = score + 1;
+                    }else{
+                        resultDisplay.textContent = "false, correct answer : " +currentQuestion.answer;
+                    }
+                    nextBtn.style.display= "block";
+                });
+
+                optionsDisplay.appendChild(btn);
+            });
+
+        }
+            nextBtn.addEventListener("click",function(){
+                currentQuestionIndex = currentQuestionIndex + 1;
+
+                if (currentQuestionIndex < questions.length){
+                    loadQuestion();
+                }else{
+                    questionDisplay.textContent = "Quiz Finished";
+                    optionsDisplay.innerHTML="";
+                    resultDisplay.textContent = `Your score: ${score}/${questions.length}`;
+                    nextBtn.style.display = "none";
+                }
+            });
+        
+        loadQuestion();
+    </script>
+</body>
+</html>
